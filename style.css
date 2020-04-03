@@ -2,10 +2,8 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background-color: blue;
-
+    background-color: white;
 }
-
 
 .container{
     height: 450px;
@@ -15,30 +13,27 @@
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     margin: 0 auto;
-    
-    
-   
-
-
 }
-div{
+
+.box{
     height: auto;
     width: auto;
     border: 2px solid black;
-    background-color: thistle;
+    background-color: rgb(150, 201, 150);
     cursor: pointer;
 }
+
 h1{
     text-align: center;
     font-size: 30px;
-    color: thistle;
+    color: black;
 }
+
 .result{
     text-align: center;
     font-size: 30px;
     margin:0;
-    
-    background-color: thistle;
+    background-color:white;
     cursor: pointer;
     
 }
