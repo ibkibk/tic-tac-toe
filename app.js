@@ -1,65 +1,46 @@
 const onload = () => {
-  let playercounter = 0;
-  const playerX = box => {
-    box
-      .append("X")
-      .css("font-size", "120px")
-      .css("text-align", "center");
-  };
-  const playerO = box => {
-    box
-      .append("O")
-      .css("font-size", "120px")
-      .css("text-align", "center");
-  };
-  const checkResult = () => {
-    sq1 = $(".box1").text();
-    sq2 = $(".box2").text();
-    sq3 = $(".box3").text();
-    sq4 = $(".box4").text();
-    sq5 = $(".box5").text();
-    sq6 = $(".box6").text();
-    sq7 = $(".box7").text();
-    sq8 = $(".box8").text();
-    sq9 = $(".box9").text();
-
-    if (sq1 === sq2 && sq2 === sq3 && sq1.length > 0) {
-      $(".result").text(`${sq1},"win"`);
-      alert("you win");
-    } else if (sq4 === sq5 && sq5 === sq6 && sq4.length > 0) {
-      $(".result").text(`${sq4},"win"`);
-      alert("you win");
-    } else if (sq7 === sq8 && sq8 === sq9 && sq7.length > 0) {
-      $(".result").text(`${sq7}`);
-      alert("you win");
-    } else if (sq1 === sq4 && sq4 === sq7 && sq1.length > 0) {
-      $(".result").text(`${sq1}`);
-      alert("you win");
-    } else if (sq2 === sq5 && sq5 === sq8 && sq2.length > 0) {
-      $(".result").text(`${sq2}`);
-      alert("you win");
-    } else if (sq3 === sq6 && sq6 === sq9 && sq3.length > 0) {
-      $(".result").text(`${sq3}`);
-      alert("you win");
-    } else if (sq3 === sq5 && sq5 === sq7 && sq3.length > 0) {
-      $(".result").text(`${sq3}`);
-      alert("you win");
-    } else if (sq1 === sq5 && sq5 === sq8 && sq1.length > 0) {
-      $(".result").text(`${sq1}`);
-      alert("you win");
-    }
+  const winConditions = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  let turnCount = 0;
+  let moves = {
+    X: [],
+    O: [],
   };
 
-  $(".box").one("click", function() {
-    if (playercounter % 2 === 0 && $(this).text().length <= 1) {
-      playerX($(this));
-      playercounter++;
-      checkResult();
-    } else if (playercounter % 2 === 1 && $(this).text().length <= 1) {
-      playerO($(this));
-      playercounter++;
-      checkResult();
+  const checkWinCondition = (movesArray, condition) => {
+    return condition.every(function (value) {
+      return movesArray.indexOf(value) >= 0;
+    });
+  };
+
+  const checkWin = (movesArray, winConditions) => {
+    for (let condition of winConditions) {
+      if (checkWinCondition(movesArray, condition)) return true;
     }
-  });
+    return false;
+  };
+  checkWin();
 };
+
+const winMessage = (turn) => {
+  $(".result").text(`Player ${turn} wins!`);
+  $(".box").off();
+};
+
+$(".box").on("click", function () {
+  const turn = turnCount % 2 === 0 ? "X" : "O";
+  $(this).text(turn).css("font-size", "120px").css("text-align", "center");
+  moves[turn].push($(this).index());
+  if (checkWin(moves[turn], winConditions)) winMessage(turn);
+  turnCount++;
+});
+
 $(onload);
